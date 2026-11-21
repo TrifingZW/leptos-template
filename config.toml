@@ -1,0 +1,21 @@
+# 应用配置：修改后重启生效
+
+[auth]
+# 留空时使用进程内临时密钥（重启将使现有会话失效）；生产环境请填入随机字符串
+jwt_secret = ""
+jwt_ttl_hours = 24
+
+[database]
+max_connections = 5
+url = "sqlite:leptos-template.db?mode=rwc"
+
+[server]
+# 启用 TLS 时，HTTP 请求重定向到的端口
+http_redirect_port = 80
+
+# 监听地址由 LEPTOS_SITE_ADDR 环境变量或 Cargo.toml 的 site-addr 提供
+[server.tls]
+# 生成方式见 self_signed_certs/README.md；启用前请确认文件存在
+cert = "self_signed_certs/leptos-template.crt"
+enabled = false
+key = "self_signed_certs/leptos-template.key"

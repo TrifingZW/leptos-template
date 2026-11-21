@@ -1,0 +1,14 @@
+{
+  "name": "leptos-template-end2end",
+  "private": true,
+  "version": "0.1.0",
+  "description": "leptos-template 端到端测试",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  }
+}

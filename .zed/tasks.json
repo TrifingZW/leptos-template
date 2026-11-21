@@ -1,0 +1,21 @@
+[
+  {
+    "label": "Leptos Watch",
+    "command": "cargo",
+    "args": ["leptos", "watch"],
+    "env": {
+      "RUST_BACKTRACE": "1",
+    },
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true,
+    "save": "all",
+    "tags": ["dev", "rust", "leptos", "watch"],
+  },
+]

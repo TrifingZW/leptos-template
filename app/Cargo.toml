@@ -1,0 +1,20 @@
+[package]
+name = "app"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# 工作空间
+rpc.workspace = true
+
+# Leptos 核心
+leptos.workspace = true
+leptos_meta.workspace = true
+leptos_router.workspace = true
+
+[features]
+default = []
+hydrate = ["leptos/hydrate", "rpc/hydrate"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "rpc/ssr"]

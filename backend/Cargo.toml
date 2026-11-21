@@ -1,0 +1,36 @@
+[package]
+name = "backend"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# Leptos 核心
+leptos = { workspace = true, features = ["ssr"] }
+leptos_axum.workspace = true
+
+# Axum 与服务器
+axum.workspace = true
+axum-extra.workspace = true
+
+# 数据库
+sqlx.workspace = true
+
+# 日志与追踪
+tracing.workspace = true
+
+# JWT 认证
+jsonwebtoken.workspace = true
+
+# 序列化
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+
+# Error
+thiserror.workspace = true
+
+# 其他工具
+time.workspace = true
+uuid.workspace = true

@@ -1,0 +1,19 @@
+# Cargo 编译产物
+/target/
+/pkg/
+
+# 运行时产物
+/logs/
+/leptos-template.db*
+
+# 本地生成的 TLS 私钥
+/self_signed_certs/*.key
+
+# rustfmt 备份文件
+**/*.rs.bk
+
+# Node 端到端测试依赖与产物
+node_modules/
+test-results/
+end2end/playwright-report/
+playwright/.cache/

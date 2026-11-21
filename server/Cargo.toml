@@ -1,0 +1,36 @@
+[package]
+name = "server"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# 工作空间
+app = { workspace = true, features = ["ssr"] }
+backend.workspace = true
+
+# Leptos 核心
+leptos = { workspace = true, features = ["ssr"] }
+leptos_axum.workspace = true
+
+# Axum 与服务器
+axum.workspace = true
+axum-server.workspace = true
+
+# HTTP 基础设施
+tower-http.workspace = true
+
+# 异步运行时
+tokio.workspace = true
+
+# 日志与追踪
+tracing.workspace = true
+tracing-appender.workspace = true
+tracing-subscriber.workspace = true
+
+# Error
+anyhow.workspace = true
+
+# 其他工具
+time.workspace = true

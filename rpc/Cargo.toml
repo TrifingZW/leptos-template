@@ -1,0 +1,22 @@
+[package]
+name = "rpc"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# 工作空间
+backend = { workspace = true, optional = true }
+
+# Leptos 核心
+leptos.workspace = true
+server_fn.workspace = true
+
+# 序列化
+serde.workspace = true
+
+[features]
+default = []
+hydrate = ["leptos/hydrate"]
+ssr = ["leptos/ssr", "dep:backend"]
