@@ -67,10 +67,10 @@ pub struct ServerConfig {
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct TlsConfig {
-    /// 证书文件路径
-    pub cert: String,
     /// 是否启用 TLS
     pub enabled: bool,
+    /// 证书文件路径
+    pub cert: String,
     /// 私钥文件路径
     pub key: String,
 }
