@@ -1,14 +1,17 @@
 #![recursion_limit = "1024"]
 
-//! 应用层：装配元信息、路由与页面。
+//! 应用层：装配页面、元信息与路由。
 
+mod components;
+mod pages;
+
+use crate::pages::{HomePage, NotFound};
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
     StaticSegment,
     components::{Route, Router, Routes},
 };
-use ui::pages::{HomePage, NotFound};
 
 /// HTML 文档骨架，由服务端在 SSR 时渲染
 pub fn shell(options: LeptosOptions) -> impl IntoView {
