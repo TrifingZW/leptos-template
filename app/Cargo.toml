@@ -7,7 +7,7 @@ version.workspace = true
 
 [dependencies]
 # 工作空间
-rpc.workspace = true
+ui.workspace = true
 
 # Leptos 核心
 leptos.workspace = true
@@ -16,5 +16,5 @@ leptos_router.workspace = true
 
 [features]
 default = []
-hydrate = ["leptos/hydrate", "rpc/hydrate"]
-ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "rpc/ssr"]
+hydrate = ["leptos/hydrate", "ui/hydrate"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "ui/ssr"]

@@ -2,8 +2,6 @@
 
 pub mod user;
 
-pub use user::User;
-
 use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
 
 use crate::{config::DatabaseConfig, error::AppError};

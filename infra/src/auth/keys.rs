@@ -1,11 +1,10 @@
+use domain::DomainError;
 use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, Validation, decode, encode};
-use serde::{Deserialize, Serialize};
-use time::{Duration, OffsetDateTime};
 
-use crate::{db::User, error::AppError};
-
-/// 令牌签发者标识
-const ISSUER: &str = "leptos-template";
+use crate::{
+    auth::claims::{Claims, ISSUER},
+    error::AppError,
+};
 
 /// HMAC 编解码密钥对
 #[derive(Clone)]
@@ -40,47 +39,17 @@ impl Keys {
 
         // 2) 解析失败统一收敛为无效令牌，避免向客户端泄露校验细节
         let data = decode::<Claims>(token, &self.decoding, &validation)
-            .map_err(|_| AppError::InvalidToken)?;
+            .map_err(|_| DomainError::InvalidToken)?;
 
         Ok(data.claims)
     }
 }
 
-/// JWT 声明
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Claims {
-    /// 过期时间（Unix 秒）
-    pub exp: i64,
-    /// 签发时间（Unix 秒）
-    pub iat: i64,
-    /// 签发者
-    pub iss: String,
-    /// 用户角色
-    pub role: String,
-    /// 用户 ID
-    pub sub: String,
-    /// 用户名
-    pub username: String,
-}
-
-impl Claims {
-    /// 依据用户与有效期构建声明
-    pub fn for_user(user: &User, ttl: Duration, issued_at: OffsetDateTime) -> Self {
-        let iat = issued_at.unix_timestamp();
-
-        Self {
-            exp: iat.saturating_add(ttl.whole_seconds()),
-            iat,
-            iss: ISSUER.to_string(),
-            role: user.role.clone(),
-            sub: user.id.to_string(),
-            username: user.username.clone(),
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    use domain::User;
+    use time::{Duration, OffsetDateTime};
+
     use super::*;
 
     fn user() -> User {
@@ -108,7 +77,7 @@ mod tests {
 
         assert!(matches!(
             Keys::new("other-secret").unwrap().decode(&token),
-            Err(AppError::InvalidToken)
+            Err(AppError::Domain(DomainError::InvalidToken))
         ));
     }
 
@@ -119,7 +88,7 @@ mod tests {
         claims.iss = "other-issuer".to_string();
         let token = keys.encode(&claims).unwrap();
 
-        assert!(matches!(keys.decode(&token), Err(AppError::InvalidToken)));
+        assert!(matches!(keys.decode(&token), Err(AppError::Domain(DomainError::InvalidToken))));
     }
 
     #[test]
@@ -129,7 +98,7 @@ mod tests {
         let claims = Claims::for_user(&user(), Duration::hours(1), issued_at);
         let token = keys.encode(&claims).unwrap();
 
-        assert!(matches!(keys.decode(&token), Err(AppError::InvalidToken)));
+        assert!(matches!(keys.decode(&token), Err(AppError::Domain(DomainError::InvalidToken))));
     }
 
     #[test]

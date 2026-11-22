@@ -1,9 +1,6 @@
 #![recursion_limit = "1024"]
 
-//! 视图层：客户端与服务端共用的组件与路由。
-
-pub mod components;
-pub mod pages;
+//! 应用层：装配元信息、路由与页面。
 
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
@@ -11,8 +8,7 @@ use leptos_router::{
     StaticSegment,
     components::{Route, Router, Routes},
 };
-
-use crate::pages::{HomePage, NotFound};
+use ui::pages::{HomePage, NotFound};
 
 /// HTML 文档骨架，由服务端在 SSR 时渲染
 pub fn shell(options: LeptosOptions) -> impl IntoView {

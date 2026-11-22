@@ -1,3 +1,5 @@
+//! 浏览器端水合入口。
+
 /// 浏览器端水合入口
 #[wasm_bindgen::prelude::wasm_bindgen]
 pub fn hydrate() {

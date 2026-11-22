@@ -3,7 +3,7 @@ use leptos::prelude::*;
 /// 登录：校验凭据并写入会话 Cookie
 #[server]
 pub async fn login(username: String, password: String) -> Result<(), ServerFnError> {
-    backend::auth::login(&username, &password).await?;
+    infra::auth::login(&username, &password).await?;
 
     Ok(())
 }
@@ -11,7 +11,7 @@ pub async fn login(username: String, password: String) -> Result<(), ServerFnErr
 /// 注销：清除会话 Cookie
 #[server]
 pub async fn logout() -> Result<(), ServerFnError> {
-    backend::auth::logout()?;
+    infra::auth::logout()?;
 
     Ok(())
 }

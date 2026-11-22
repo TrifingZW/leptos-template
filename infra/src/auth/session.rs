@@ -1,12 +1,12 @@
 use axum::http::{HeaderValue, header::SET_COOKIE};
 use axum_extra::extract::cookie::{Cookie, SameSite};
+use domain::DomainError;
 use leptos_axum::ResponseOptions;
 use time::{Duration, OffsetDateTime};
 
 use crate::{
     auth::{Claims, SESSION_COOKIE},
-    context,
-    db::User,
+    context, db,
     error::AppError,
 };
 
@@ -15,15 +15,16 @@ pub async fn login(username: &str, password: &str) -> Result<(), AppError> {
     // 1) 拒绝空凭据
     let username = username.trim();
     if username.is_empty() || password.is_empty() {
-        return Err(AppError::MissingCredentials);
+        return Err(DomainError::MissingCredentials.into());
     }
 
     // 2) 校验用户与密码
     let state = context::state()?;
-    let user =
-        User::find_by_username(&state.pool, username).await?.ok_or(AppError::WrongCredentials)?;
+    let user = db::user::find_by_username(&state.pool, username)
+        .await?
+        .ok_or(DomainError::WrongCredentials)?;
     if !verify_password(password, &user.password) {
-        return Err(AppError::WrongCredentials);
+        return Err(DomainError::WrongCredentials.into());
     }
 
     // 3) 依据配置的有效期签发令牌

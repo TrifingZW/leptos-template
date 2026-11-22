@@ -1,0 +1,18 @@
+[package]
+name = "ui"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+# 工作空间
+api.workspace = true
+
+# Leptos 核心
+leptos.workspace = true
+
+[features]
+default = []
+hydrate = ["leptos/hydrate", "api/hydrate"]
+ssr = ["leptos/ssr", "api/ssr"]

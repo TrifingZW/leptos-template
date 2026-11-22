@@ -13,7 +13,7 @@ pub struct CurrentUser {
 /// 读取当前登录用户
 #[server]
 pub async fn get_current_user() -> Result<CurrentUser, ServerFnError> {
-    let claims = backend::context::claims().await?;
+    let claims = infra::context::claims().await?;
 
     Ok(CurrentUser {
         role: claims.role,

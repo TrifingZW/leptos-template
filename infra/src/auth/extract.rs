@@ -4,6 +4,7 @@ use axum_extra::{
     extract::CookieJar,
     headers::{Authorization, authorization::Bearer},
 };
+use domain::DomainError;
 
 use crate::{
     auth::{Claims, SESSION_COOKIE},
@@ -18,7 +19,7 @@ where
     type Rejection = AppError;
 
     async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
-        let token = extract_token(parts).await.ok_or(AppError::MissingToken)?;
+        let token = extract_token(parts).await.ok_or(DomainError::MissingToken)?;
         let keys = context::state()?.keys;
 
         keys.decode(&token)

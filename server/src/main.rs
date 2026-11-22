@@ -1,14 +1,13 @@
 //! 服务端入口：装配配置、数据库、路由与 HTTP/HTTPS 监听。
 
 mod middleware;
-mod telemetry;
 mod transport;
 
 use std::fs;
 
 use anyhow::anyhow;
 use axum::Router;
-use backend::{AppConfig, AppState, auth::Keys, db};
+use infra::{AppConfig, AppState, auth::Keys, db, telemetry};
 use leptos::{config::LeptosOptions, prelude::provide_context};
 use leptos_axum::{LeptosRoutes, generate_route_list};
 

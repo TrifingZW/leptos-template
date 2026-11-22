@@ -1,5 +1,5 @@
+use api::user::{CurrentUser, get_current_user};
 use leptos::prelude::*;
-use rpc::user::{CurrentUser, get_current_user};
 
 /// 当前登录用户徽标，未登录时降级为提示文案
 #[component]

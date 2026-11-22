@@ -3,6 +3,7 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
 };
+use domain::DomainError;
 use serde_json::json;
 
 /// 应用统一错误类型
@@ -12,6 +13,8 @@ use serde_json::json;
 /// 客户端只取到错误消息，需要精确状态码的接口请使用 HTTP 处理器。
 #[derive(Debug, thiserror::Error)]
 pub enum AppError {
+    #[error(transparent)]
+    Domain(#[from] DomainError),
     #[error("配置错误：{0}")]
     Config(String),
     #[error("数据库错误：{0}")]
@@ -20,16 +23,6 @@ pub enum AppError {
     Migration(#[from] sqlx::migrate::MigrateError),
     #[error("令牌错误：{0}")]
     Token(#[from] jsonwebtoken::errors::Error),
-    #[error("用户名和密码不能为空")]
-    MissingCredentials,
-    #[error("用户名或密码错误")]
-    WrongCredentials,
-    #[error("未提供授权令牌")]
-    MissingToken,
-    #[error("无效的授权令牌")]
-    InvalidToken,
-    #[error("资源不存在：{0}")]
-    NotFound(&'static str),
     #[error("内部错误：{0}")]
     Internal(String),
 }
@@ -38,11 +31,13 @@ impl AppError {
     /// 错误对应的 HTTP 状态码
     pub fn status(&self) -> StatusCode {
         match self {
-            Self::MissingCredentials => StatusCode::BAD_REQUEST,
-            Self::NotFound(_) => StatusCode::NOT_FOUND,
-            Self::WrongCredentials | Self::MissingToken | Self::InvalidToken => {
-                StatusCode::UNAUTHORIZED
-            }
+            Self::Domain(error) => match error {
+                DomainError::MissingCredentials => StatusCode::BAD_REQUEST,
+                DomainError::NotFound(_) => StatusCode::NOT_FOUND,
+                DomainError::WrongCredentials
+                | DomainError::MissingToken
+                | DomainError::InvalidToken => StatusCode::UNAUTHORIZED,
+            },
             Self::Config(_)
             | Self::Database(_)
             | Self::Migration(_)
